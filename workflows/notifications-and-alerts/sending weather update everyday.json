@@ -1,0 +1,144 @@
+{
+  "name": "sending weather update everyday",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": "={{ 1 }}",
+              "triggerAtMinute": 54
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -640,
+        -80
+      ],
+      "id": "0f9bfc90-086c-4792-80cf-25d1254a17b5",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "cityName": "Chemnitz"
+      },
+      "type": "n8n-nodes-base.openWeatherMap",
+      "typeVersion": 1,
+      "position": [
+        -384,
+        -80
+      ],
+      "id": "59c1a6f7-21c8-49d0-a7c4-b7a4443cbae5",
+      "name": "OpenWeatherMap",
+      "credentials": {
+        "openWeatherMapApi": {
+          "id": "PeyIYFZLalf6VqXc",
+          "name": "OpenWeatherMap account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "your_email@email.com",
+        "subject": "weather",
+        "emailType": "text",
+        "message": "=hi, today's temparature is  {{ $json.main.temp }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        0,
+        16
+      ],
+      "id": "7df9f5a6-dde1-40bb-86ba-b21fadd9f3a9",
+      "name": "Send a message",
+      "webhookId": "fa20d6fa-4dbe-4be7-be0f-76595f2044f0",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "d28dsf1WUoQNIK2F",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "=5855060937",
+        "text": "=Today's Temparature:  {{ $json.main.temp }} Degree Celcius.",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        16,
+        -224
+      ],
+      "id": "8355f9de-a1ba-459b-bbac-fb8c3bb7447d",
+      "name": "Send a text message",
+      "webhookId": "5e645770-2d7a-445b-8708-2d0c8fd672d3",
+      "credentials": {
+        "telegramApi": {
+          "id": "NdGcAbux3d51MuiW",
+          "name": "Telegram account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "OpenWeatherMap",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenWeatherMap": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a text message": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "timeSavedMode": "fixed",
+    "timezone": "Europe/Berlin",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "versionId": "25d9296a-43dc-4a54-99ff-29997d509121",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "a3db5fbc41f2d747bbe2ec567f5ccdbd1d15f5e8c1ea803b8c1fa52832aa4df7"
+  },
+  "nodeGroups": [],
+  "id": "GFcuRw46zhRhj1td",
+  "tags": []
+}
