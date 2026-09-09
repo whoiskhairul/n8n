@@ -1,0 +1,367 @@
+{
+  "name": "form submission to sheet append",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Submit Offer",
+        "formDescription": "I am open to listening to your offer",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "First Name"
+            },
+            {
+              "fieldLabel": "Last Name"
+            },
+            {
+              "fieldLabel": "Company"
+            },
+            {
+              "fieldLabel": "Email",
+              "fieldType": "email"
+            },
+            {
+              "fieldLabel": "Budget",
+              "fieldType": "number",
+              "placeholder": "50000"
+            }
+          ]
+        },
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.6,
+      "position": [
+        -352,
+        -48
+      ],
+      "id": "9c9d78e0-9f16-4725-b54c-6ff196abe690",
+      "name": "On form submission",
+      "webhookId": "598690a2-647c-446f-a934-fb48807d1a8b"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.Budget }}",
+                    "rightValue": 50000,
+                    "operator": {
+                      "type": "number",
+                      "operation": "gte"
+                    },
+                    "id": "257f86ef-a3f6-486f-9384-acf0f5553b6f"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "3e8a8f33-a5ba-4b53-8262-3dcc9465e5ac",
+                    "leftValue": "={{ $json.Budget }}",
+                    "rightValue": 50000,
+                    "operator": {
+                      "type": "number",
+                      "operation": "lt"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        -128,
+        -48
+      ],
+      "id": "d4bf0cbd-f04e-438f-9e5c-643380f09ce3",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1137N_n9fMviHFkJyWSdvYDWrZxSvaCdpX7ltyX7VGKc",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1137N_n9fMviHFkJyWSdvYDWrZxSvaCdpX7ltyX7VGKc/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "First name": "={{ $json['First Name'] }}",
+            "Last Name": "={{ $json['Last Name'] }}",
+            "Company": "={{ $json.Company }}",
+            "Email": "={{ $json.Email }}",
+            "Budget": "={{ $json.Budget }}",
+            "Decision": "Not accepting the offer"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "First name",
+              "displayName": "First name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Last Name",
+              "displayName": "Last Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Company",
+              "displayName": "Company",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Budget",
+              "displayName": "Budget",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Decision",
+              "displayName": "Decision",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        192,
+        32
+      ],
+      "id": "5a0545e1-300b-4ba9-a183-8fe4c52cde81",
+      "name": "Append row in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "tVhiTrDn0DD1z8fi",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1137N_n9fMviHFkJyWSdvYDWrZxSvaCdpX7ltyX7VGKc",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1137N_n9fMviHFkJyWSdvYDWrZxSvaCdpX7ltyX7VGKc/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "First name": "={{ $json['First Name'] }}",
+            "Last Name": "={{ $json['Last Name'] }}",
+            "Company": "={{ $json.Company }}",
+            "Email": "={{ $json.Email }}",
+            "Budget": "={{ $json.Budget }}",
+            "Decision": "Follow Up"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "First name",
+              "displayName": "First name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Last Name",
+              "displayName": "Last Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Company",
+              "displayName": "Company",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Budget",
+              "displayName": "Budget",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Decision",
+              "displayName": "Decision",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        192,
+        -192
+      ],
+      "id": "ca87973f-e0ed-44ab-8372-43754cdb0908",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "tVhiTrDn0DD1z8fi",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Append row in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "706f9f44-9c4b-4b5a-a8a9-7babad760fc8",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "a3db5fbc41f2d747bbe2ec567f5ccdbd1d15f5e8c1ea803b8c1fa52832aa4df7"
+  },
+  "nodeGroups": [],
+  "id": "Mn38w2OhkHZuONMd",
+  "tags": []
+}
